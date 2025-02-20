@@ -43,21 +43,17 @@ class JwtRequestFilterTest {
         when(jwtTokenProvider.validateToken("valid-token")).thenReturn(true);
         when(jwtTokenProvider.validateTokenAndRetrieveSubject("valid-token")).thenReturn("test-user");
 
-        // Appeler la méthode à tester
         filter.doFilterInternal(request, response, filterChain);
 
-        // Vérifier que l'authentification a été définie correctement
         SecurityContext context = SecurityContextHolder.getContext();
         assertTrue(context.getAuthentication() instanceof UsernamePasswordAuthenticationToken);
         assertEquals("test-user", context.getAuthentication().getName());
 
-        // Vérifier que filterChain.doFilter a été appelé
         verify(filterChain).doFilter(request, response);
     }
 
     @Test
     void testDoFilterInternal_InvalidToken() throws ServletException, IOException {
-        // Préparer les mocks
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer invalid-token");
 
@@ -66,14 +62,11 @@ class JwtRequestFilterTest {
 
         when(jwtTokenProvider.validateToken("invalid-token")).thenReturn(false);
 
-        // Appeler la méthode à tester
         filter.doFilterInternal(request, response, filterChain);
 
-        // Vérifier que l'authentification n'a pas été définie
         SecurityContext context = SecurityContextHolder.getContext();
         assertNull(context.getAuthentication());
 
-        // Vérifier que filterChain.doFilter a été appelé
         verify(filterChain).doFilter(request, response);
     }
 }

@@ -7,8 +7,10 @@ import com.delivery.infrastructure.persistence.TimeSlotEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JpaTimeSlotRepository extends JpaRepository<TimeSlotEntity, String> {
     List<TimeSlotEntity> findByStartDateTimeAfterAndReservedFalse(LocalDateTime date);
+    Optional<TimeSlotEntity> findById(String id);
 }

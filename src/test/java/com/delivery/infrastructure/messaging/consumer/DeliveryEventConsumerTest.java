@@ -1,23 +1,41 @@
 package com.delivery.infrastructure.messaging.consumer;
 
 import com.delivery.domain.event.DeliveryEvent;
+import com.delivery.domain.service.DeliveryService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.test.annotation.DirtiesContext;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-@EmbeddedKafka(topics = {"delivery-events"})
-@DirtiesContext
 public class DeliveryEventConsumerTest {
 
-    @Test
-    public void testConsumeEvent() {
-        DeliveryEvent event = new DeliveryEvent("RESERVED", "Slot reserved");
+    @MockBean
+    private DeliveryService deliveryService;
 
-        // Simulez la publication d'un événement et vérifiez qu'il est consommé
-        assertTrue(true); // Remplacez par une vérification réelle
+    @Autowired
+    private DeliveryEventConsumer consumer;
+
+    @BeforeEach
+    void setUp() {
+        Mockito.reset(deliveryService);
+    }
+
+    @Test
+    void testConsumeDeliveryEvent() {
+        DeliveryEvent event = new DeliveryEvent("DELIVERED", "slotId");
+        consumer.consume(event);
+
+        Mockito.verify(deliveryService).processDelivery(event);
+    }
+
+    @Test
+    void testConsumeReservationEvent() {
+        DeliveryEvent event = new DeliveryEvent("RESERVED", "slotId");
+        consumer.consume(event);
+
+        Mockito.verify(deliveryService).processReservation(event);
     }
 }

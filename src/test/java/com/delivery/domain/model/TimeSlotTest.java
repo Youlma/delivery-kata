@@ -24,6 +24,7 @@ public class TimeSlotTest {
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.minusHours(1);
 
-        assertThrows(IllegalArgumentException.class, () -> new TimeSlot(start, end));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new TimeSlot(start, end));
+        assertEquals("La date de début doit précéder la date de fin.", exception.getMessage());
     }
 }

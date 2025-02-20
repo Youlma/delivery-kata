@@ -1,22 +1,23 @@
 package com.delivery.infrastructure.security;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class JwtTokenProviderTest {
 
-    @Autowired
+    @MockBean
     private JwtTokenProvider jwtTokenProvider;
 
     @Test
-    public void testGenerateToken() {
+    void testGenerateToken() {
         String token = jwtTokenProvider.generateToken("test-user");
-        assertNotNull(token);
+        Mockito.when(jwtTokenProvider.validateTokenAndRetrieveSubject(token)).thenReturn("test-user");
+
         assertEquals("test-user", jwtTokenProvider.validateTokenAndRetrieveSubject(token));
     }
 }

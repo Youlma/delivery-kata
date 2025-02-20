@@ -18,7 +18,6 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration-in-seconds}")
     private long jwtExpirationInSeconds;
 
-    // Générer un token JWT
     public String generateToken(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInSeconds * 1000);
@@ -31,7 +30,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // Valider un token JWT
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
@@ -41,7 +39,6 @@ public class JwtTokenProvider {
         }
     }
 
-    // Récupérer le sujet (username) depuis un token valide
     public String validateTokenAndRetrieveSubject(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)

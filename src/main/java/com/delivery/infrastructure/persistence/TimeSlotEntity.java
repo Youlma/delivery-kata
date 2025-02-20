@@ -3,7 +3,12 @@ package com.delivery.infrastructure.persistence;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import com.delivery.domain.model.DeliveryMode;
 
 @Entity
 @Table(name = "time_slots")
@@ -14,11 +19,10 @@ public class TimeSlotEntity {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private boolean reserved;
+    private DeliveryMode delivered;
 
-    // Constructeur sans arguments (nécessaire pour JPA)
     public TimeSlotEntity() {}
 
-    // Constructeur avec arguments
     public TimeSlotEntity(String id, LocalDateTime startDateTime, LocalDateTime endDateTime, boolean reserved) {
         this.id = id;
         this.startDateTime = startDateTime;
@@ -26,8 +30,14 @@ public class TimeSlotEntity {
         this.reserved = reserved;
     }
 
-    // Getters and Setters
-    public String getId() {
+    public TimeSlotEntity(LocalDate now, LocalTime of, LocalTime of2, DeliveryMode delivery) {
+    	this.id = id;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.delivered = delivery;
+	}
+
+	public String getId() {
         return id;
     }
 
@@ -58,4 +68,14 @@ public class TimeSlotEntity {
     public void setReserved(boolean reserved) {
         this.reserved = reserved;
     }
+
+	public DeliveryMode getDelivered() {
+		return delivered;
+	}
+
+	public void setDelivered(DeliveryMode delivered) {
+		this.delivered = delivered;
+	}
+    
+    
 }

@@ -11,7 +11,6 @@ public class TimeSlot {
         this.endDateTime = endDateTime;
     }
 
-    // Ajoutez les getters manquants
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
